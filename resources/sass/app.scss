@@ -1,0 +1,23 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+@import '~vuetify/dist/vuetify.min.css';
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.gb-container {
+    max-width: 1420px;
+}
+
+.gb-home {
+    color: #333333 !important;
+}
+
+.gb-game-show-card {
+}
