@@ -1,39 +1,89 @@
 <template>
     <v-app>
+        <v-navigation-drawer
+            v-model="drawer"
+            app
+            clipped
+        >
+            <v-list dense>
+                <inertia-link :href="this.route('games')">
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>mdi-view-dashboard</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Home</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </inertia-link>
+                <inertia-link :href="this.route('games', {platform: 'pc'})">
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>fas fa-desktop</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>PC Games</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </inertia-link>
+                <inertia-link :href="this.route('games', {platform: 'ps4'})">
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>fab fa-playstation</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>PS4 Games</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </inertia-link>
+                <inertia-link :href="this.route('games', {platform: 'xbox-one'})">
+                    <v-list-item link>
+                        <v-list-item-action>
+                            <v-icon>fab fa-xbox</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Xbox One Games</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </inertia-link>
+            </v-list>
+        </v-navigation-drawer>
+
         <v-app-bar
             app
             clipped-left
-            color=""
         >
-            <inertia-link :href="this.route('games')" class="title ml-3 mr-5 gb-home">Game Browser</inertia-link>
-
-            <inertia-link :href="this.route('games', {platform: 'pc'})" class="subtitle-1 ml-3 mr-5">PC</inertia-link>
-            <inertia-link :href="this.route('games', {platform: 'ps4'})" class="subtitle-1 ml-3 mr-5">PlayStation 4</inertia-link>
-            <inertia-link :href="this.route('games', {platform: 'xbox-one'})" class="subtitle-1 ml-3 mr-5">Xbox One</inertia-link>
-
-            <!--<SearchBar class="my-2" :search="search"></SearchBar>-->
-
-            <v-spacer></v-spacer>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-toolbar-title>Game Browser</v-toolbar-title>
         </v-app-bar>
 
         <v-content>
-            <v-container class="gb-container">
+            <v-container
+                class="fill-height"
+                fluid
+            >
                 <slot/>
             </v-container>
         </v-content>
+
+        <v-footer app>
+            <span>&copy; 2020</span>
+        </v-footer>
     </v-app>
 </template>
 
-<!--<script>
-    import SearchBar from "@/Components/SearchBar";
-
+<script>
     export default {
-        components: {
-            SearchBar
+        props: {
+            source: String,
         },
-        props: [
-            'search'
-        ]
-    }
-</script>-->
 
+        data: () => ({
+            drawer: null,
+        }),
+
+        created() {
+            this.$vuetify.theme.dark = true
+        },
+    }
+</script>

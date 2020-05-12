@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <v-card class="gb-game-show-card pa-2">
+        <v-card class="gb-game-show-card pa-2" width="100%">
         <v-row justify="space-around">
             <v-col cols="6">
                 <v-img :src="game.image" aspect-ratio="2" contain></v-img>

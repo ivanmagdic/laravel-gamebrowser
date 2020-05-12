@@ -2,10 +2,6 @@
     <Layout :search="search">
         <SearchBar class="my-2" :search="search"></SearchBar>
 
-        <div class="title text-uppercase grey--text text--darken-2 mt-6" v-if="search === ''">
-            POPULAR GAMES
-        </div>
-
         <v-row>
             <v-col
                 v-for="game in games"

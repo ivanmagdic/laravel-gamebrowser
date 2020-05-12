@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.css'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
@@ -5,7 +6,9 @@ import Vuetify from 'vuetify'
 //Vue.config.productionTip = false
 Vue.mixin({methods: {route: window.route}})
 Vue.use(InertiaApp)
-Vue.use(Vuetify);
+Vue.use(Vuetify,{
+    iconfont: 'fa'
+});
 
 const app = document.getElementById('app')
 
