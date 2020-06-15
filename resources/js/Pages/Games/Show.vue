@@ -11,12 +11,12 @@
             <v-col cols="6">
                 <div class="title mb-5">{{ game.name}}</div>
 
-                <div class="mb-2" v-if="game.release_date">
+                <div class="mb-2" v-if="game.first_release_date">
                     <div class="subheading font-weight-bold">
                         Release date
                     </div>
                     <span>
-                            {{ game.release_date}}
+                            {{ game.first_release_date}}
                         </span>
                 </div>
 
@@ -43,7 +43,7 @@
                         Platforms
                     </div>
                     <span v-for="(platform, index) in game.platforms">
-                    <span v-if="index !== 0">, </span><span>{{ platform.name }}</span>
+                    <span v-if="index !== 0">, </span><span>{{ platform }}</span>
                   </span>
                 </div>
 
@@ -52,7 +52,7 @@
                         Genres
                     </div>
                     <span v-for="(genre, index) in game.genres">
-                    <span v-if="index !== 0">, </span><span>{{ genre.name }}</span>
+                    <span v-if="index !== 0">, </span><span>{{ genre }}</span>
                   </span>
                 </div>
 

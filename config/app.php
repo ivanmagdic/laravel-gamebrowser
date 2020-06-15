@@ -229,4 +229,10 @@ return [
 
     ],
 
+    /**
+     * IGDB
+     */
+
+    'igdb_api_key' => env('IGDB_API_KEY', ''),
+
 ];

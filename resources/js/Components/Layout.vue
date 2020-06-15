@@ -9,40 +9,40 @@
                 <inertia-link :href="this.route('games')">
                     <v-list-item link>
                         <v-list-item-action>
-                            <v-icon>mdi-view-dashboard</v-icon>
+                            <v-icon>mdi-view-dashboard fa-fw</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>Home</v-list-item-title>
+                            <v-list-item-title>Most Anticipated</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </inertia-link>
                 <inertia-link :href="this.route('games', {platform: 'pc'})">
                     <v-list-item link>
                         <v-list-item-action>
-                            <v-icon>fas fa-desktop</v-icon>
+                            <v-icon>fas fa-desktop fa-fw</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>PC Games</v-list-item-title>
+                            <v-list-item-title>Popular PC Games</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </inertia-link>
                 <inertia-link :href="this.route('games', {platform: 'ps4'})">
                     <v-list-item link>
                         <v-list-item-action>
-                            <v-icon>fab fa-playstation</v-icon>
+                            <v-icon>fab fa-playstation fa-fw</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>PS4 Games</v-list-item-title>
+                            <v-list-item-title>Popular PS4 Games</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </inertia-link>
                 <inertia-link :href="this.route('games', {platform: 'xbox-one'})">
                     <v-list-item link>
                         <v-list-item-action>
-                            <v-icon>fab fa-xbox</v-icon>
+                            <v-icon>fab fa-xbox fa-fw</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>Xbox One Games</v-list-item-title>
+                            <v-list-item-title>Popular Xbox One Games</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </inertia-link>
@@ -59,7 +59,6 @@
 
         <v-content>
             <v-container
-                class="fill-height"
                 fluid
             >
                 <slot/>

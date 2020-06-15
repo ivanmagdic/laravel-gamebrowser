@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\IGDB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
-use MarcReichel\IGDBLaravel\Builder;
 
 class GameController extends Controller
 {
@@ -17,44 +17,25 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $builder = new Builder('games');
+        $igdb = new IGDB(config('app.igdb_api_key'));
+
+        $games = $igdb->mostAnticipated();
 
         if ($searchFilter = $request->get('filter')) {
-            $builder->search($searchFilter);
+            $games = $igdb->search($searchFilter);
         }
-
-        $builder->with(['cover' => ['url'], 'platforms' => ['id', 'name']]);
 
         if ($platform = $request->query('platform')) {
             switch ($platform) {
                 case 'pc':
-                    $builder->whereIn('platforms', [6, 14]); // 14 is Mac
+                    $games = $igdb->popularForPC();
                     break;
                 case 'ps4':
-                    $builder->whereIn('platforms', [45, 48]);
+                    $games = $igdb->popularForPS4();
                     break;
                 case 'xbox-one':
-                    $builder->whereIn('platforms', [49]);
+                    $games = $igdb->popularForXONE();
                     break;
-            }
-        }
-
-        $builder->take(config('igdb.per_page_limit'));
-        $games = $builder->orderByDesc('popularity')->get();
-
-        foreach ($games as $game) {
-            if (isset($game->cover->url)) {
-                $game->image = str_replace('t_thumb', 't_cover_big', $game->cover->url);
-            } else {
-                $game->image = 'https://via.placeholder.com/150';
-            }
-
-            if (isset($game->rating)) {
-                $game->rating = $game->rating / 20;
-            }
-
-            if (isset($game->first_release_date)) {
-                $game->first_release_date = Carbon::createFromTimestamp($game->first_release_date)->year;
             }
         }
 
@@ -73,27 +54,10 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $builder = new Builder('games');
-
-        $builder->where('id', $id);
-        $game = $builder->with(['cover' => ['url'], 'platforms' => ['name'], 'genres' => ['name']])->firstOrFail();
-
-        if (isset($game->cover->url)) {
-            $game->image = str_replace('t_thumb', 't_cover_big', $game->cover->url);
-        } else {
-            $game->image = 'https://via.placeholder.com/150';
-        }
-
-        if (isset($game->rating)) {
-            $game->rating = $game->rating / 20;
-        }
-
-        if (isset($game->first_release_date)) {
-            $game->release_date = Carbon::createFromTimestamp($game->first_release_date)->toFormattedDateString();
-        }
+        $igdb = new IGDB(config('app.igdb_api_key'));
 
         return Inertia::render('Games/Show', [
-            'game' => $game,
+            'game' => $igdb->game($id),
         ]);
     }
 

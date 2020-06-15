@@ -6,6 +6,7 @@
             <v-img
                 height="300px"
                 :src="game.image"
+                contain
             >
             </v-img>
 
@@ -15,7 +16,7 @@
                 <div v-if="game.first_release_date"> {{ game.first_release_date }}</div>
                 <div v-if="game.platforms">
                   <span v-for="(platform, index) in game.platforms">
-                    <span v-if="index !== 0">, </span><span>{{ platform.name }}</span>
+                    <span v-if="index !== 0">, </span><span>{{ platform }}</span>
                   </span>
                 </div>
                 <div class="text-center" v-if="game.rating">
