@@ -2,5 +2,11 @@
 
 Laravel application built with Inertia.js and Vue.js. 
 
-![](Screenshot-1.jpg)
-![](Screenshot-2.jpg)
+## Usage
+* ``` cp .examle.env .env```
+* ``` php artisan key:generate```
+* Add ```IGDB_API_KEY``` to .env
+
+## Screenshots
+![](Screenshot-1.png)
+![](Screenshot-2.png)
