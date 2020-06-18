@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\IGDB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class GameController extends Controller
 {
@@ -13,12 +13,11 @@ class GameController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Inertia\Response
+     * @param IGDB $igdb
+     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, IGDB $igdb)
     {
-        $igdb = new IGDB(config('app.igdb_api_key'));
-
         $games = $igdb->mostAnticipated();
 
         if ($searchFilter = $request->get('filter')) {
@@ -50,12 +49,11 @@ class GameController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Inertia\Response
+     * @param IGDB $igdb
+     * @return Response
      */
-    public function show($id)
+    public function show($id, IGDB $igdb)
     {
-        $igdb = new IGDB(config('app.igdb_api_key'));
-
         return Inertia::render('Games/Show', [
             'game' => $igdb->game($id),
         ]);

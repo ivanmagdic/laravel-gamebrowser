@@ -114,7 +114,8 @@ class IGDB
         ])
             ->withOptions([
                 'body' => $body
-            ])->get($this->endpoint)
+            ])
+            ->get($this->endpoint)
             ->json();
     }
 
