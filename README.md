@@ -3,7 +3,7 @@
 Laravel application built with Inertia.js and Vue.js. 
 
 ## Usage
-* ``` cp .examle.env .env```
+* ``` cp .example.env .env```
 * ``` php artisan key:generate```
 * Add ```IGDB_API_KEY``` to .env
 
