@@ -24,7 +24,7 @@
         "@fortawesome/fontawesome-free": "^5.13.0",
         "@inertiajs/inertia": "^0.1.9",
         "@inertiajs/inertia-vue": "^0.1.4",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "vuetify": "^2.3.0"
     }
 }
