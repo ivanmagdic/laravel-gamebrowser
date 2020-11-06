@@ -5,7 +5,7 @@ Laravel application built with Inertia.js and Vue.js.
 ## Usage
 * ``` cp .example.env .env```
 * ``` php artisan key:generate```
-* Add ```IGDB_API_KEY``` to .env
+* Add Twitch ```CLIENT_ID```  and ```CLIENT_SECRET``` to .env
 
 ## Screenshots
 ![](Screenshot-1.png)

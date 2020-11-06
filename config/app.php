@@ -233,6 +233,7 @@ return [
      * IGDB
      */
 
-    'igdb_api_key' => env('IGDB_API_KEY', ''),
+    'client_id' => env('TWITCH_CLIENT_ID', ''),
+    'client_secret' => env('TWITCH_CLIENT_SECRET', ''),
 
 ];

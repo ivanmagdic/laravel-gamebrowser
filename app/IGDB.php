@@ -6,16 +6,19 @@ namespace App;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class IGDB
 {
-    private string $apiKey;
-    protected string $endpoint = 'https://api-v3.igdb.com/games';
+    private string $clientId;
+    private string $clientSecret;
+    protected string $endpoint = 'https://api.igdb.com/v4/games';
 
-    public function __construct(string $apiKey)
+    public function __construct(string $clientId, string $clientSecret)
     {
-        $this->apiKey = $apiKey;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
     }
 
     public function mostAnticipated($months = 6): Collection
@@ -24,11 +27,12 @@ class IGDB
         $until = Carbon::now()->addMonths($months)->timestamp;
 
         $body = "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, cover.url, first_release_date, platforms.abbreviation, rating, follows;
             where platforms = (48,49,6)
             & (first_release_date >= {$now}
-            & first_release_date < {$until});
-            sort popularity desc;
+            & first_release_date < {$until})
+            & follows != null;
+            sort follows desc;
             limit 16;
         ";
 
@@ -37,15 +41,16 @@ class IGDB
 
     public function popularForPC(): Collection
     {
-        $from = Carbon::now()->subMonth(3)->timestamp;
+        $from = Carbon::now()->subMonths(3)->timestamp;
         $to = Carbon::now()->addMonths(3)->timestamp;
 
         $body = "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, cover.url, first_release_date, platforms.abbreviation, rating, follows;
             where platforms = (6)
             & (first_release_date >= {$from}
-            & first_release_date < {$to});
-            sort popularity desc;
+            & first_release_date < {$to})
+            & follows != null;
+            sort follows desc;
             limit 16;
         ";
 
@@ -54,15 +59,16 @@ class IGDB
 
     public function popularForPS4(): Collection
     {
-        $from = Carbon::now()->subMonth(3)->timestamp;
+        $from = Carbon::now()->subMonths(3)->timestamp;
         $to = Carbon::now()->addMonths(3)->timestamp;
 
         $body = "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, cover.url, first_release_date, platforms.abbreviation, rating, follows;
             where platforms = (48)
             & (first_release_date >= {$from}
-            & first_release_date < {$to});
-            sort popularity desc;
+            & first_release_date < {$to})
+            & follows != null;
+            sort follows desc;
             limit 16;
         ";
 
@@ -71,15 +77,16 @@ class IGDB
 
     public function popularForXONE(): Collection
     {
-        $from = Carbon::now()->subMonth(3)->timestamp;
+        $from = Carbon::now()->subMonths(3)->timestamp;
         $to = Carbon::now()->addMonths(3)->timestamp;
 
         $body = "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, cover.url, first_release_date, platforms.abbreviation, rating, follows;
             where platforms = (49)
             & (first_release_date >= {$from}
-            & first_release_date < {$to});
-            sort popularity desc;
+            & first_release_date < {$to})
+            & follows != null;
+            sort follows desc;
             limit 16;
         ";
 
@@ -89,7 +96,7 @@ class IGDB
     public function search(string $keyword): Collection
     {
         $body = "
-            fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, cover.url, first_release_date, platforms.abbreviation, rating;
             search \"{$keyword}\";
             limit 40;
         ";
@@ -100,7 +107,7 @@ class IGDB
     public function game(string $id)
     {
         $body = "
-            fields name, summary, storyline, genres.name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
+            fields name, summary, storyline, genres.name, cover.url, first_release_date, platforms.abbreviation, rating;
             where id = {$id};
         ";
 
@@ -109,14 +116,35 @@ class IGDB
 
     protected function fetch(string $body): array
     {
+        $accessToken = $this->fetchAccessToken();
+
         return Http::withHeaders([
-            'user-key' => $this->apiKey,
+            'Client-ID' => config('app.client_id'),
         ])
-            ->withOptions([
+            ->acceptJson()
+            ->withToken($accessToken)
+            ->send('POST', $this->endpoint, [
                 'body' => $body
             ])
-            ->get($this->endpoint)
             ->json();
+    }
+
+    protected function fetchAccessToken(): string
+    {
+        if ($accessToken = Cache::get('igdb.access.token', false)) {
+            return $accessToken;
+        }
+
+        $response = Http::post("https://id.twitch.tv/oauth2/token?client_id={$this->clientId}&client_secret={$this->clientSecret}&grant_type=client_credentials")
+            ->json();
+
+        if (!isset($response['access_token'], $response['expires_in'])) {
+            throw new \Exception('Malformed response retrieving access token form Twitch');
+        }
+
+        Cache::put('igdb.access.token', (string)$response['access_token'], (int)$response['expires_in']);
+
+        return (string)$response['access_token'];
     }
 
     protected function formatForList($games): Collection
