@@ -25,6 +25,6 @@
         "@inertiajs/inertia": "^0.1.9",
         "@inertiajs/inertia-vue": "^0.1.4",
         "lodash": "^4.17.20",
-        "vuetify": "^2.3.0"
+        "vuetify": "^2.6.10"
     }
 }
